@@ -36,6 +36,8 @@ import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCppModelsUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCppModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalModelUseCase
@@ -98,8 +100,10 @@ import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHordeUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToHuggingFaceUseCaseImpl
-import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCase
-import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionCppUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionCppUseCaseImpl
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionOnnxUseCase
+import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToLocalDiffusionOnnxUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCase
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToMediaPipeUseCaseImpl
 import com.shifthackz.aisdv1.domain.usecase.settings.ConnectToOpenAiUseCase
@@ -167,6 +171,7 @@ internal val useCasesModule = module {
     factoryOf(::GetLastResultFromCacheUseCaseImpl) bind GetLastResultFromCacheUseCase::class
     factoryOf(::ObserveLocalDiffusionProcessStatusUseCaseImpl) bind ObserveLocalDiffusionProcessStatusUseCase::class
     factoryOf(::GetLocalOnnxModelsUseCaseImpl) bind GetLocalOnnxModelsUseCase::class
+    factoryOf(::GetLocalCppModelsUseCaseImpl) bind GetLocalCppModelsUseCase::class
     factoryOf(::GetLocalMediaPipeModelsUseCaseImpl) bind GetLocalMediaPipeModelsUseCase::class
     factoryOf(::DownloadModelUseCaseImpl) bind DownloadModelUseCase::class
     factoryOf(::ObserveLocalOnnxModelsUseCaseImpl) bind ObserveLocalOnnxModelsUseCase::class
@@ -175,7 +180,8 @@ internal val useCasesModule = module {
     factoryOf(::ReleaseWakeLockUseCaseImpl) bind ReleaseWakeLockUseCase::class
     factoryOf(::InterruptGenerationUseCaseImpl) bind InterruptGenerationUseCase::class
     factoryOf(::ConnectToHordeUseCaseImpl) bind ConnectToHordeUseCase::class
-    factoryOf(::ConnectToLocalDiffusionUseCaseImpl) bind ConnectToLocalDiffusionUseCase::class
+    factoryOf(::ConnectToLocalDiffusionOnnxUseCaseImpl) bind ConnectToLocalDiffusionOnnxUseCase::class
+    factoryOf(::ConnectToLocalDiffusionCppUseCaseImpl) bind ConnectToLocalDiffusionCppUseCase::class
     factoryOf(::ConnectToMediaPipeUseCaseImpl) bind ConnectToMediaPipeUseCase::class
     factoryOf(::ConnectToA1111UseCaseImpl) bind ConnectToA1111UseCase::class
     factoryOf(::ConnectToSwarmUiUseCaseImpl) bind ConnectToSwarmUiUseCase::class

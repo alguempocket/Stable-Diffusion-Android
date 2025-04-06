@@ -36,6 +36,19 @@ internal class DownloadableModelLocalDataSource(
         }
         .flatMap { models -> models.withLocalData() }
 
+    override fun getAllCpp(): Single<List<LocalAiModel>> = dao
+        .queryByType(LocalAiModel.Type.Cpp.key)
+        .map(List<LocalModelEntity>::mapEntityToDomain)
+        .map { models ->
+            buildList {
+                addAll(models)
+                if (buildInfoProvider.type != BuildType.PLAY) {
+                    add(LocalAiModel.CustomCpp)
+                }
+            }
+        }
+        .flatMap { models -> models.withLocalData() }
+
     override fun getAllMediaPipe(): Single<List<LocalAiModel>> = dao
         .queryByType(LocalAiModel.Type.MediaPipe.key)
         .map(List<LocalModelEntity>::mapEntityToDomain)
@@ -89,20 +102,19 @@ internal class DownloadableModelLocalDataSource(
         try {
             when (model.id) {
                 LocalAiModel.CustomOnnx.id,
+                LocalAiModel.CustomCpp.id,
                 LocalAiModel.CustomMediaPipe.id -> emitter.onSuccess(true)
 
-                else -> {
+                else -> when (model.type) {
+                    LocalAiModel.Type.ONNX -> {
+                        val files = getLocalModelFiles(model.id).filter { it.isDirectory }
+                        emitter.onSuccess(files.size == 4)
+                    }
 
-                    when (model.type) {
-                        LocalAiModel.Type.ONNX -> {
-                            val files = getLocalModelFiles(model.id).filter { it.isDirectory }
-                            emitter.onSuccess(files.size == 4)
-                        }
-
-                        LocalAiModel.Type.MediaPipe -> {
-                            val files = getLocalModelFiles(model.id)
-                            emitter.onSuccess(files.isNotEmpty())
-                        }
+                    LocalAiModel.Type.MediaPipe,
+                    LocalAiModel.Type.Cpp -> {
+                        val files = getLocalModelFiles(model.id)
+                        emitter.onSuccess(files.isNotEmpty())
                     }
                 }
             }
@@ -133,6 +145,7 @@ internal class DownloadableModelLocalDataSource(
                 selected = when (this.type) {
                     LocalAiModel.Type.ONNX -> preferenceManager.localOnnxModelId == id
                     LocalAiModel.Type.MediaPipe -> preferenceManager.localMediaPipeModelId == id
+                    LocalAiModel.Type.Cpp -> preferenceManager.localCppModelId == id
                 },
             )
         }

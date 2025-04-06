@@ -22,12 +22,28 @@ internal class DownloadableModelRemoteDataSource(
         api
             .fetchOnnxModels()
             .map { it.mapRawToCheckpointDomain(LocalAiModel.Type.ONNX) },
+//        api
+//            .fetchCppModels()
+//            .map { it.mapRawToCheckpointDomain(LocalAiModel.Type.Cpp) },
+        Single.just(
+            listOf(
+                LocalAiModel(
+                    id = "abb51642-58f9-4401-9ca1-c0eac29e5c1d",
+                    type = LocalAiModel.Type.Cpp,
+                    name = "Test",
+                    size = "Unknown",
+                    sources = listOf(
+                        "https://share.moroz.cc/SDAI/cpp/epicphotogasmLCM_ultimatefidelity.zip"
+                    ),
+                )
+            )
+        ),
         api
             .fetchMediaPipeModels()
             .map { it.mapRawToCheckpointDomain(LocalAiModel.Type.MediaPipe) },
-        ::Pair,
+        ::Triple,
     )
-        .map { (onnx, mediapipe) -> listOf(onnx, mediapipe).flatten() }
+        .map { (onnx, cpp, mediapipe) -> listOf(onnx, cpp, mediapipe).flatten() }
 
     override fun download(id: String, url: String): Observable<DownloadState> = Completable
         .fromAction {

@@ -12,7 +12,6 @@ import com.shifthackz.aisdv1.core.validation.dimension.DimensionValidator
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
 import com.shifthackz.aisdv1.domain.entity.ServerSource
-import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundTaskManager
 import com.shifthackz.aisdv1.domain.feature.work.BackgroundWorkObserver
 import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor

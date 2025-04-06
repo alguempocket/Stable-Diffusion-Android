@@ -5,7 +5,7 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
-import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.LocalDiffusionOnnxGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StableDiffusionGenerationRepository
 import io.reactivex.rxjava3.core.Completable
 import org.junit.Test
@@ -15,13 +15,13 @@ class InterruptGenerationUseCaseImplTest {
     private val stubException = Throwable("Can not interrupt generation.")
     private val stubStableDiffusionGenerationRepository = mock<StableDiffusionGenerationRepository>()
     private val stubHordeGenerationRepository = mock<HordeGenerationRepository>()
-    private val stubLocalDiffusionGenerationRepository = mock<LocalDiffusionGenerationRepository>()
+    private val stubLocalDiffusionOnnxGenerationRepository = mock<LocalDiffusionOnnxGenerationRepository>()
     private val stubPreferenceManager = mock<PreferenceManager>()
 
     private val useCase = InterruptGenerationUseCaseImpl(
         stableDiffusionGenerationRepository = stubStableDiffusionGenerationRepository,
         hordeGenerationRepository = stubHordeGenerationRepository,
-        localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
+        localDiffusionOnnxGenerationRepository = stubLocalDiffusionOnnxGenerationRepository,
         preferenceManager = stubPreferenceManager,
     )
 
@@ -90,7 +90,7 @@ class InterruptGenerationUseCaseImplTest {
         whenever(stubPreferenceManager.source)
             .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
-        whenever(stubLocalDiffusionGenerationRepository.interruptGeneration())
+        whenever(stubLocalDiffusionOnnxGenerationRepository.interruptGeneration())
             .thenReturn(Completable.complete())
 
         useCase()
@@ -105,7 +105,7 @@ class InterruptGenerationUseCaseImplTest {
         whenever(stubPreferenceManager.source)
             .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
-        whenever(stubLocalDiffusionGenerationRepository.interruptGeneration())
+        whenever(stubLocalDiffusionOnnxGenerationRepository.interruptGeneration())
             .thenReturn(Completable.error(stubException))
 
         useCase()

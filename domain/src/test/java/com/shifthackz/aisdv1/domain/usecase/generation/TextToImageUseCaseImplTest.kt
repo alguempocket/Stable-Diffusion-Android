@@ -9,7 +9,7 @@ import com.shifthackz.aisdv1.domain.mocks.mockTextToImagePayload
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
-import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.LocalDiffusionOnnxGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.StabilityAiGenerationRepository
@@ -27,7 +27,7 @@ class TextToImageUseCaseImplTest {
     private val stubOpenAiGenerationRepository = mock<OpenAiGenerationRepository>()
     private val stubStabilityAiGenerationRepository = mock<StabilityAiGenerationRepository>()
     private val stubSwarmUiGenerationRepository = mock<SwarmUiGenerationRepository>()
-    private val stubLocalDiffusionGenerationRepository = mock<LocalDiffusionGenerationRepository>()
+    private val stubLocalDiffusionOnnxGenerationRepository = mock<LocalDiffusionOnnxGenerationRepository>()
     private val stubMediaPipeGenerationRepository = mock<MediaPipeGenerationRepository>()
     private val stubPreferenceManager = mock<PreferenceManager>()
 
@@ -37,7 +37,7 @@ class TextToImageUseCaseImplTest {
         huggingFaceGenerationRepository = stubHuggingFaceGenerationRepository,
         openAiGenerationRepository = stubOpenAiGenerationRepository,
         stabilityAiGenerationRepository = stubStabilityAiGenerationRepository,
-        localDiffusionGenerationRepository = stubLocalDiffusionGenerationRepository,
+        localDiffusionOnnxGenerationRepository = stubLocalDiffusionOnnxGenerationRepository,
         swarmUiGenerationRepository = stubSwarmUiGenerationRepository,
         mediaPipeGenerationRepository = stubMediaPipeGenerationRepository,
         preferenceManager = stubPreferenceManager,
@@ -368,7 +368,7 @@ class TextToImageUseCaseImplTest {
         whenever(stubPreferenceManager.source)
             .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
-        whenever(stubLocalDiffusionGenerationRepository.generateFromText(any()))
+        whenever(stubLocalDiffusionOnnxGenerationRepository.generateFromText(any()))
             .thenReturn(Single.just(mockAiGenerationResult))
 
         val stubBatchCount = 1
@@ -391,7 +391,7 @@ class TextToImageUseCaseImplTest {
         whenever(stubPreferenceManager.source)
             .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
-        whenever(stubLocalDiffusionGenerationRepository.generateFromText(any()))
+        whenever(stubLocalDiffusionOnnxGenerationRepository.generateFromText(any()))
             .thenReturn(Single.just(mockAiGenerationResult))
 
         val stubBatchCount = 10
@@ -414,7 +414,7 @@ class TextToImageUseCaseImplTest {
         whenever(stubPreferenceManager.source)
             .thenReturn(ServerSource.LOCAL_MICROSOFT_ONNX)
 
-        whenever(stubLocalDiffusionGenerationRepository.generateFromText(any()))
+        whenever(stubLocalDiffusionOnnxGenerationRepository.generateFromText(any()))
             .thenReturn(Single.error(stubException))
 
         val stubBatchCount = 1

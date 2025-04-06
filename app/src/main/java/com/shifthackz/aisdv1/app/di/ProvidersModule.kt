@@ -15,9 +15,10 @@ import com.shifthackz.aisdv1.domain.entity.ServerSource
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationCredentials
 import com.shifthackz.aisdv1.domain.feature.auth.AuthorizationStore
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
-import com.shifthackz.aisdv1.feature.diffusion.entity.LocalDiffusionFlag
-import com.shifthackz.aisdv1.feature.diffusion.environment.DeviceNNAPIFlagProvider
-import com.shifthackz.aisdv1.feature.diffusion.environment.LocalModelIdProvider
+import com.shifthackz.aisdv1.feature.localdiffusion.cpp.environment.LocalCppModelIdProvider
+import com.shifthackz.aisdv1.feature.localdiffusion.onnx.entity.LocalDiffusionFlag
+import com.shifthackz.aisdv1.feature.localdiffusion.onnx.environment.DeviceNNAPIFlagProvider
+import com.shifthackz.aisdv1.feature.localdiffusion.onnx.environment.LocalOnnxModelIdProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiKeyProvider
 import com.shifthackz.aisdv1.network.qualifiers.ApiUrlProvider
 import com.shifthackz.aisdv1.network.qualifiers.CredentialsProvider
@@ -184,7 +185,11 @@ val providersModule = module {
     }
 
     single {
-        LocalModelIdProvider { get<PreferenceManager>().localOnnxModelId }
+        LocalOnnxModelIdProvider { get<PreferenceManager>().localOnnxModelId }
+    }
+
+    single {
+        LocalCppModelIdProvider { get<PreferenceManager>().localCppModelId }
     }
 
     single {

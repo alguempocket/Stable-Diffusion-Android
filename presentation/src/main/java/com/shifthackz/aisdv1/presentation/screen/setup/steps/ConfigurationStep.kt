@@ -65,6 +65,12 @@ fun ConfigurationStep(
                 buildInfoProvider = buildInfoProvider,
                 processIntent = processIntent,
             )
+
+            ServerSource.LOCAL_CPP -> LocalDiffusionForm(
+                state = state,
+                buildInfoProvider = buildInfoProvider,
+                processIntent = processIntent,
+            )
         }
     }
 }

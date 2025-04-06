@@ -5,6 +5,7 @@ import com.shifthackz.aisdv1.core.common.appbuild.BuildType
 import com.shifthackz.aisdv1.core.common.log.errorLog
 import com.shifthackz.aisdv1.core.common.schedulers.DispatchersProvider
 import com.shifthackz.aisdv1.core.common.model.Quadruple
+import com.shifthackz.aisdv1.core.common.model.Quintuple
 import com.shifthackz.aisdv1.core.common.schedulers.SchedulersProvider
 import com.shifthackz.aisdv1.core.common.schedulers.subscribeOnMainThread
 import com.shifthackz.aisdv1.core.model.asUiText
@@ -21,6 +22,7 @@ import com.shifthackz.aisdv1.domain.interactor.wakelock.WakeLockInterActor
 import com.shifthackz.aisdv1.domain.preference.PreferenceManager
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DeleteModelUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.DownloadModelUseCase
+import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalCppModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalMediaPipeModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.downloadable.GetLocalOnnxModelsUseCase
 import com.shifthackz.aisdv1.domain.usecase.huggingface.FetchAndGetHuggingFaceModelsUseCase
@@ -29,6 +31,7 @@ import com.shifthackz.aisdv1.presentation.model.LaunchSource
 import com.shifthackz.aisdv1.presentation.model.Modal
 import com.shifthackz.aisdv1.presentation.navigation.router.main.MainRouter
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.allowedModes
+import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomCppSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomMediaPipeSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapLocalCustomOnnxSwitchState
 import com.shifthackz.aisdv1.presentation.screen.setup.mappers.mapToUi
@@ -42,6 +45,7 @@ class ServerSetupViewModel(
     dispatchersProvider: DispatchersProvider,
     getConfigurationUseCase: GetConfigurationUseCase,
     getLocalOnnxModelsUseCase: GetLocalOnnxModelsUseCase,
+    getLocalCppModelsUseCase: GetLocalCppModelsUseCase,
     getLocalMediaPipeModelsUseCase: GetLocalMediaPipeModelsUseCase,
     fetchAndGetHuggingFaceModelsUseCase: FetchAndGetHuggingFaceModelsUseCase,
     private val urlValidator: UrlValidator,
@@ -81,12 +85,13 @@ class ServerSetupViewModel(
         !Single.zip(
             getConfigurationUseCase(),
             getLocalOnnxModelsUseCase(),
+            getLocalCppModelsUseCase(),
             getLocalMediaPipeModelsUseCase(),
             fetchAndGetHuggingFaceModelsUseCase(),
-            ::Quadruple,
+            ::Quintuple,
         )
             .subscribeOnMainThread(schedulersProvider)
-            .subscribeBy(::errorLog) { (configuration, onnxModels, mpModels, hfModels) ->
+            .subscribeBy(::errorLog) { (configuration, onnxModels, cppModels, mpModels, hfModels) ->
                 updateState { state ->
                     state.copy(
                         huggingFaceModels = hfModels.map(HuggingFaceModel::alias),
@@ -94,6 +99,8 @@ class ServerSetupViewModel(
                         huggingFaceApiKey = configuration.huggingFaceApiKey,
                         openAiApiKey = configuration.openAiApiKey,
                         stabilityAiApiKey = configuration.stabilityAiApiKey,
+                        localCppModels = cppModels.mapToUi(),
+                        localCppCustomModel = cppModels.mapLocalCustomCppSwitchState(),
                         localOnnxModels = onnxModels.mapToUi(),
                         localOnnxCustomModel = onnxModels.mapLocalCustomOnnxSwitchState(),
                         localOnnxCustomModelPath = configuration.localOnnxModelPath,
@@ -241,13 +248,14 @@ class ServerSetupViewModel(
         emitEffect(ServerSetupEffect.HideKeyboard)
         !when (currentState.mode) {
             ServerSource.HORDE -> connectToHorde()
-            ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusion()
+            ServerSource.LOCAL_MICROSOFT_ONNX -> connectToLocalDiffusionOnnx()
             ServerSource.AUTOMATIC1111 -> connectToAutomaticInstance()
             ServerSource.HUGGING_FACE -> connectToHuggingFace()
             ServerSource.OPEN_AI -> connectToOpenAi()
             ServerSource.STABILITY_AI -> connectToStabilityAi()
             ServerSource.SWARM_UI -> connectToSwarmUi()
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> connectToMediaPipe()
+            ServerSource.LOCAL_CPP -> connectToLocalDiffusionCpp()
         }
             .doOnSubscribe { setScreenModal(Modal.Communicating(canCancel = false)) }
             .subscribeOnMainThread(schedulersProvider)
@@ -289,6 +297,16 @@ class ServerSetupViewModel(
             validation.isValid
         } else {
             currentState.localOnnxModels.find { it.selected && it.downloaded } != null
+        }
+
+        ServerSource.LOCAL_CPP -> if (currentState.localCppCustomModel) {
+            val validation = filePathValidator(currentState.localCppCustomModelPath)
+            updateState {
+                it.copy(localCustomCppPathValidationError = validation.mapToUi())
+            }
+            validation.isValid
+        } else {
+            currentState.localCppModels.find { it.selected && it.downloaded } != null
         }
 
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> when {
@@ -406,10 +424,16 @@ class ServerSetupViewModel(
         return setupConnectionInterActor.connectToHorde(testApiKey)
     }
 
-    private fun connectToLocalDiffusion(): Single<Result<Unit>> {
+    private fun connectToLocalDiffusionOnnx(): Single<Result<Unit>> {
         preferenceManager.localOnnxCustomModelPath = currentState.localOnnxCustomModelPath
         val localModelId = currentState.localOnnxModels.find { it.selected }?.id ?: ""
-        return setupConnectionInterActor.connectToLocal(localModelId)
+        return setupConnectionInterActor.connectToLocalOnnx(localModelId)
+    }
+
+    private fun connectToLocalDiffusionCpp(): Single<Result<Unit>> {
+        preferenceManager.localCppModelId = currentState.localCppCustomModelPath
+        val localModelId = currentState.localCppModels.find { it.selected }?.id ?: ""
+        return setupConnectionInterActor.connectToLocalCpp(localModelId)
     }
 
     private fun connectToMediaPipe(): Single<Result<Unit>> {

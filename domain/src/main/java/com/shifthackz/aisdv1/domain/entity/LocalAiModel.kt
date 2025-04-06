@@ -11,6 +11,7 @@ data class LocalAiModel(
 ) {
     enum class Type(val key: String) {
         ONNX("onnx"),
+        Cpp("cpp"),
         MediaPipe("mediapipe");
 
         companion object {
@@ -22,6 +23,14 @@ data class LocalAiModel(
         val CustomOnnx = LocalAiModel(
             id = "CUSTOM",
             type = Type.ONNX,
+            name = "Custom",
+            size = "NaN",
+            sources = emptyList(),
+        )
+
+        val CustomCpp = LocalAiModel(
+            id = "CUSTOM_CPP",
+            type = Type.Cpp,
             name = "Custom",
             size = "NaN",
             sources = emptyList(),

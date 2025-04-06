@@ -15,7 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Android
 import androidx.compose.material.icons.filled.Cloud
 import androidx.compose.material.icons.filled.Computer
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -55,11 +54,11 @@ fun ConfigurationModeButton(
                     cornerRadius = CornerRadius(16.dp.toPx()),
                 )
                 if (state.mode != mode) return@drawBehind
-                    drawRoundRect(
-                        color = borderColor,
-                        style = Stroke(2.dp.toPx()),
-                        cornerRadius = CornerRadius(16.dp.toPx()),
-                    )
+                drawRoundRect(
+                    color = borderColor,
+                    style = Stroke(2.dp.toPx()),
+                    cornerRadius = CornerRadius(16.dp.toPx()),
+                )
             }
             .clickable { onClick(mode) }
             .padding(horizontal = 4.dp)
@@ -80,7 +79,8 @@ fun ConfigurationModeButton(
                     ServerSource.HUGGING_FACE -> Icons.Default.Cloud
 
                     ServerSource.LOCAL_MICROSOFT_ONNX,
-                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> Icons.Default.Android
+                    ServerSource.LOCAL_GOOGLE_MEDIA_PIPE,
+                    ServerSource.LOCAL_CPP -> Icons.Default.Android
                 },
                 contentDescription = null,
             )
@@ -102,6 +102,7 @@ fun ConfigurationModeButton(
             ServerSource.STABILITY_AI -> LocalizationR.string.hint_stability_ai_sub_title
             ServerSource.SWARM_UI -> LocalizationR.string.hint_swarm_ui_sub_title
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.hint_mediapipe_sub_title
+            ServerSource.LOCAL_CPP -> LocalizationR.string.hint_local_diffusion_cpp_title
         }
         descriptionId?.let { resId ->
             Text(

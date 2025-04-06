@@ -24,6 +24,8 @@ internal class SetServerConfigurationUseCaseImpl(
             preferenceManager.huggingFaceModel = configuration.huggingFaceModel
             preferenceManager.stabilityAiApiKey = configuration.stabilityAiApiKey
             preferenceManager.stabilityAiEngineId = configuration.stabilityAiEngineId
+            preferenceManager.localCppModelId = configuration.localCppModelId
+            preferenceManager.localCppCustomModelPath = configuration.localCppModelPath
             preferenceManager.localOnnxModelId = configuration.localOnnxModelId
             preferenceManager.localOnnxCustomModelPath = configuration.localOnnxModelPath
             preferenceManager.localMediaPipeModelId = configuration.localMediaPipeModelId

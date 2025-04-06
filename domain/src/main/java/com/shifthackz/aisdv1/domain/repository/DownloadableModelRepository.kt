@@ -11,6 +11,7 @@ interface DownloadableModelRepository {
     fun download(id: String, url: String): Observable<DownloadState>
     fun delete(id: String): Completable
     fun getAllOnnx(): Single<List<LocalAiModel>>
+    fun getAllCpp(): Single<List<LocalAiModel>>
     fun getAllMediaPipe(): Single<List<LocalAiModel>>
     fun observeAllOnnx(): Flowable<List<LocalAiModel>>
 }

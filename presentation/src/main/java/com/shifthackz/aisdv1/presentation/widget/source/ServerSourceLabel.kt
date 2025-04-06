@@ -21,4 +21,5 @@ fun ServerSource.getNameUiText(): UiText = when (this) {
     ServerSource.OPEN_AI -> LocalizationR.string.srv_type_open_ai
     ServerSource.STABILITY_AI -> LocalizationR.string.srv_type_stability_ai
     ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
+    ServerSource.LOCAL_CPP -> LocalizationR.string.srv_type_local_cpp
 }.asUiText()

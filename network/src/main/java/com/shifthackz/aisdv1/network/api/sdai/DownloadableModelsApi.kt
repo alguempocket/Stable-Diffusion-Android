@@ -13,6 +13,8 @@ interface DownloadableModelsApi {
 
     fun fetchOnnxModels(): Single<List<DownloadableModelResponse>>
 
+    fun fetchCppModels(): Single<List<DownloadableModelResponse>>
+
     fun fetchMediaPipeModels(): Single<List<DownloadableModelResponse>>
 
     fun <T : Any> downloadModel(
@@ -26,6 +28,9 @@ interface DownloadableModelsApi {
     interface RawApi {
         @GET("/models.json")
         fun fetchOnnxModels(): Single<List<DownloadableModelResponse>>
+
+        @GET("/cpp.json")
+        fun fetchCppModels(): Single<List<DownloadableModelResponse>>
 
         @GET("/mediapipe.json")
         fun fetchMediaPipeModels(): Single<List<DownloadableModelResponse>>

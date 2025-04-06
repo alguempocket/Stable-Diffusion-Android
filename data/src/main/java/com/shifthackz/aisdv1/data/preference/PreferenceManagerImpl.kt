@@ -62,6 +62,11 @@ class PreferenceManagerImpl(
         default = LOCAL_DIFFUSION_CUSTOM_PATH,
     )
 
+    override var localCppCustomModelPath: String by preferences.delegates.string(
+        key = KEY_LOCAL_DIFFUSION_CPP_CUSTOM_MODEL_PATH,
+        default = LOCAL_DIFFUSION_CUSTOM_PATH,
+    )
+
     override var localOnnxCustomModelPath: String by preferences.delegates.string(
         key = KEY_LOCAL_DIFFUSION_CUSTOM_MODEL_PATH,
         default = LOCAL_DIFFUSION_CUSTOM_PATH,
@@ -166,7 +171,12 @@ class PreferenceManagerImpl(
     )
 
     override var localOnnxModelId: String by preferences.delegates.string(
-        key = KEY_LOCAL_MODEL_ID,
+        key = KEY_LOCAL_ONNX_MODEL_ID,
+        onChanged = ::onPreferencesChanged,
+    )
+
+    override var localCppModelId: String by preferences.delegates.string(
+        key = KEY_LOCAL_CPP_MODEL_ID,
         onChanged = ::onPreferencesChanged,
     )
 
@@ -266,6 +276,7 @@ class PreferenceManagerImpl(
         const val KEY_SWARM_MODEL = "key_swarm_model"
         const val KEY_DEMO_MODE = "key_demo_mode"
         const val KEY_DEVELOPER_MODE = "key_developer_mode"
+        const val KEY_LOCAL_DIFFUSION_CPP_CUSTOM_MODEL_PATH = "key_local_diffusion_cpp_custom_model_path"
         const val KEY_LOCAL_DIFFUSION_CUSTOM_MODEL_PATH = "key_local_diffusion_custom_model_path"
         const val KEY_MEDIA_PIPE_CUSTOM_MODEL_PATH = "key_mediapipe_custom_model_path"
         const val KEY_ALLOW_LOCAL_DIFFUSION_CANCEL = "key_allow_local_diffusion_cancel"
@@ -286,7 +297,8 @@ class PreferenceManagerImpl(
         const val KEY_ON_BOARDING_COMPLETE = "key_on_boarding_complete"
         const val KEY_FORCE_SETUP_AFTER_UPDATE = "force_upd_setup_v0.x.x-v0.6.2"
         const val KEY_MEDIA_PIPE_MODEL_ID = "key_mediapipe_model_id"
-        const val KEY_LOCAL_MODEL_ID = "key_local_model_id"
+        const val KEY_LOCAL_ONNX_MODEL_ID = "key_local_model_id"
+        const val KEY_LOCAL_CPP_MODEL_ID = "key_local_cpp_model_id"
         const val KEY_LOCAL_NN_API = "key_local_nn_api"
         const val KEY_DESIGN_DYNAMIC_COLORS = "key_design_dynamic_colors"
         const val KEY_DESIGN_SYSTEM_DARK_THEME = "key_design_system_dark_theme"

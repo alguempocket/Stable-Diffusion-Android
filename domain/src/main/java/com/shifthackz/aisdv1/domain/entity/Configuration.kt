@@ -15,6 +15,8 @@ data class Configuration(
     val stabilityAiApiKey: String = "",
     val stabilityAiEngineId: String = "",
     val authCredentials: AuthorizationCredentials = AuthorizationCredentials.None,
+    val localCppModelId: String = "",
+    val localCppModelPath: String = "",
     val localOnnxModelId: String = "",
     val localOnnxModelPath: String = "",
     val localMediaPipeModelId: String = "",

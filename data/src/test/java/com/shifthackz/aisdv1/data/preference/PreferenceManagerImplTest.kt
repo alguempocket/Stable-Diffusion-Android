@@ -19,7 +19,7 @@ import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HORDE_API_KEY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HUGGING_FACE_API_KEY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_HUGGING_FACE_MODEL_KEY
-import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_LOCAL_MODEL_ID
+import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_LOCAL_ONNX_MODEL_ID
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_LOCAL_NN_API
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_MONITOR_CONNECTIVITY
 import com.shifthackz.aisdv1.data.preference.PreferenceManagerImpl.Companion.KEY_OPEN_AI_API_KEY
@@ -372,12 +372,12 @@ class PreferenceManagerImplTest {
 
     @Test
     fun `given user reads default localModelId, changes it, expected default value, then changed value`() {
-        whenever(stubPreference.getString(eq(KEY_LOCAL_MODEL_ID), any()))
+        whenever(stubPreference.getString(eq(KEY_LOCAL_ONNX_MODEL_ID), any()))
             .thenReturn("")
 
         Assert.assertEquals("", preferenceManager.localOnnxModelId)
 
-        whenever(stubPreference.getString(eq(KEY_LOCAL_MODEL_ID), any()))
+        whenever(stubPreference.getString(eq(KEY_LOCAL_ONNX_MODEL_ID), any()))
             .thenReturn("key")
 
         preferenceManager.localOnnxModelId = "key"

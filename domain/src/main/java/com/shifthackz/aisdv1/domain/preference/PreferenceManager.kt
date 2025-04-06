@@ -14,6 +14,7 @@ interface PreferenceManager {
     var demoMode: Boolean
     var developerMode: Boolean
     var localMediaPipeCustomModelPath: String
+    var localCppCustomModelPath: String
     var localOnnxCustomModelPath: String
     var localOnnxAllowCancel: Boolean
     var localOnnxSchedulerThread: SchedulersToken
@@ -33,6 +34,7 @@ interface PreferenceManager {
     var onBoardingComplete: Boolean
     var forceSetupAfterUpdate: Boolean
     var localOnnxModelId: String
+    var localCppModelId: String
     var localOnnxUseNNAPI: Boolean
     var localMediaPipeModelId: String
     var designUseSystemColorPalette: Boolean

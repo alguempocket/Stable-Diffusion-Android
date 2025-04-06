@@ -240,6 +240,7 @@ private fun ContentSettingsState(
                     ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.srv_type_local_short
                     ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> LocalizationR.string.srv_type_media_pipe_short
                     ServerSource.SWARM_UI -> LocalizationR.string.srv_type_swarm_ui
+                    ServerSource.LOCAL_CPP -> LocalizationR.string.srv_type_local_cpp_short
                 }.asUiText(),
                 onClick = { processIntent(SettingsIntent.NavigateConfiguration) },
             )

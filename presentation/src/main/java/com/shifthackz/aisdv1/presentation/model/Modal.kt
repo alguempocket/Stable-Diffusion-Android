@@ -8,7 +8,6 @@ import com.shifthackz.aisdv1.domain.entity.AiGenerationResult
 import com.shifthackz.aisdv1.domain.entity.Grid
 import com.shifthackz.aisdv1.domain.entity.HordeProcessStatus
 import com.shifthackz.aisdv1.domain.entity.LocalDiffusionStatus
-import com.shifthackz.aisdv1.domain.feature.diffusion.LocalDiffusion
 import com.shifthackz.aisdv1.presentation.screen.setup.ServerSetupState
 
 sealed interface Modal {

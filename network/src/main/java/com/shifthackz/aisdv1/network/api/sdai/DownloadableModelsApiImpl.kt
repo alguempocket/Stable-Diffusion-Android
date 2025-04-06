@@ -12,6 +12,8 @@ internal class DownloadableModelsApiImpl(
 
     override fun fetchOnnxModels() = rawApi.fetchOnnxModels()
 
+    override fun fetchCppModels() = rawApi.fetchCppModels()
+
     override fun fetchMediaPipeModels() = rawApi.fetchMediaPipeModels()
 
     override fun <T : Any> downloadModel(

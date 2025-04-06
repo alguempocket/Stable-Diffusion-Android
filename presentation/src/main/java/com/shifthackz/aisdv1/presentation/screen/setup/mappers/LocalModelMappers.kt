@@ -8,6 +8,9 @@ fun List<LocalAiModel>.mapToUi(): List<ServerSetupState.LocalModel> = map(LocalA
 fun List<LocalAiModel>.mapLocalCustomOnnxSwitchState(): Boolean =
     find { it.selected && it.id == LocalAiModel.CustomOnnx.id } != null
 
+fun List<LocalAiModel>.mapLocalCustomCppSwitchState(): Boolean =
+    find { it.selected && it.id == LocalAiModel.CustomCpp.id } != null
+
 fun List<LocalAiModel>.mapLocalCustomMediaPipeSwitchState(): Boolean =
     find { it.selected && it.id == LocalAiModel.CustomMediaPipe.id } != null
 

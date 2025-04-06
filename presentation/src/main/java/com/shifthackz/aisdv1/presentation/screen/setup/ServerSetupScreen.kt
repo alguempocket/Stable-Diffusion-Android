@@ -159,6 +159,10 @@ fun ServerSetupScreenContent(
                                 it.downloaded && it.selected
                             }
 
+                            ServerSource.LOCAL_CPP -> state.localCppModels.any {
+                                it.downloaded && it.selected
+                            }
+
                             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> state.localMediaPipeModels.any {
                                 it.downloaded && it.selected
                             }

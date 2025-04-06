@@ -73,6 +73,14 @@ enum class ServerSource(
             FeatureTag.MultipleModels,
         ),
     ),
+    LOCAL_CPP(
+        key = "local_cpp",
+        featureTags = setOf(
+            FeatureTag.Offline,
+            FeatureTag.Txt2Img,
+            FeatureTag.MultipleModels,
+        ),
+    ),
     LOCAL_GOOGLE_MEDIA_PIPE(
         key = "local_google_media_pipe",
         featureTags = setOf(

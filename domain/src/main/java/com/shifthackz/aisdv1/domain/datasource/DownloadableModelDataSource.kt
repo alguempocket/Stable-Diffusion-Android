@@ -16,6 +16,7 @@ sealed interface DownloadableModelDataSource {
 
     interface Local : DownloadableModelDataSource {
         fun getAllOnnx(): Single<List<LocalAiModel>>
+        fun getAllCpp(): Single<List<LocalAiModel>>
         fun getAllMediaPipe(): Single<List<LocalAiModel>>
         fun getById(id: String): Single<LocalAiModel>
         fun getSelectedOnnx(): Single<LocalAiModel>

@@ -39,6 +39,9 @@ data class ServerSetupState(
     val localOnnxModels: List<LocalModel> = emptyList(),
     val localOnnxCustomModel: Boolean = false,
     val localOnnxCustomModelPath: String = "",
+    val localCppModels: List<LocalModel> = emptyList(),
+    val localCppCustomModel: Boolean = false,
+    val localCppCustomModelPath: String = "",
     val localMediaPipeModels: List<LocalModel> = emptyList(),
     val localMediaPipeCustomModel: Boolean = false,
     val localMediaPipeCustomModelPath: String = "",
@@ -52,35 +55,40 @@ data class ServerSetupState(
     val openAiApiKeyValidationError: UiText? = null,
     val stabilityAiApiKeyValidationError: UiText? = null,
     val localCustomOnnxPathValidationError: UiText? = null,
+    val localCustomCppPathValidationError: UiText? = null,
     val localCustomMediaPipePathValidationError: UiText? = null,
 ) : MviState, KoinComponent {
 
     val localCustomModel: Boolean
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localOnnxCustomModel
-        } else {
-            localMediaPipeCustomModel
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModel
+            ServerSource.LOCAL_CPP -> localCppCustomModel
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModel
+            else -> false
         }
 
     val localCustomModelPath: String
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localOnnxCustomModelPath
-        } else {
-            localMediaPipeCustomModelPath
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxCustomModelPath
+            ServerSource.LOCAL_CPP -> localCppCustomModelPath
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeCustomModelPath
+            else -> ""
         }
 
     val localModels: List<LocalModel>
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localOnnxModels
-        } else {
-            localMediaPipeModels
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localOnnxModels
+            ServerSource.LOCAL_CPP -> localCppModels
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localMediaPipeModels
+            else -> emptyList()
         }
 
     val localCustomModelPathValidationError: UiText?
-        get() = if (mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-            localCustomOnnxPathValidationError
-        } else {
-            localCustomMediaPipePathValidationError
+        get() = when (mode) {
+            ServerSource.LOCAL_MICROSOFT_ONNX -> localCustomOnnxPathValidationError
+            ServerSource.LOCAL_CPP -> localCustomCppPathValidationError
+            ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> localCustomMediaPipePathValidationError
+            else -> null
         }
 
     val demoModeUrl: String
@@ -109,6 +117,11 @@ data class ServerSetupState(
             localCustomOnnxPathValidationError = null,
         )
 
+        ServerSource.LOCAL_CPP -> copy(
+            localCppCustomModelPath = value,
+            localCustomCppPathValidationError = null,
+        )
+
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
             localMediaPipeCustomModelPath = value,
             localCustomMediaPipePathValidationError = null,
@@ -120,6 +133,9 @@ data class ServerSetupState(
     fun withUpdatedLocalModel(value: LocalModel): ServerSetupState = when (mode) {
         ServerSource.LOCAL_MICROSOFT_ONNX -> copy(
             localOnnxModels = localOnnxModels.withNewState(value)
+        )
+        ServerSource.LOCAL_CPP -> copy(
+            localCppModels = localCppModels.withNewState(value)
         )
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
             localMediaPipeModels = localMediaPipeModels.withNewState(value)
@@ -135,7 +151,17 @@ data class ServerSetupState(
                     downloadState = DownloadState.Unknown,
                     downloaded = false,
                 ),
-            )
+            ),
+        )
+
+        ServerSource.LOCAL_CPP -> copy(
+            screenModal = Modal.None,
+            localCppModels = localCppModels.withNewState(
+                value.copy(
+                    downloadState = DownloadState.Unknown,
+                    downloaded = false,
+                ),
+            ),
         )
 
         ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> copy(
@@ -145,7 +171,7 @@ data class ServerSetupState(
                     downloadState = DownloadState.Unknown,
                     downloaded = false,
                 ),
-            )
+            ),
         )
 
         else -> copy(screenModal = Modal.None)
@@ -164,6 +190,12 @@ data class ServerSetupState(
             ),
         )
 
+        ServerSource.LOCAL_CPP -> copy(
+            localCppModels = localCppModels.withNewState(
+                value.copy(selected = true)
+            )
+        )
+
         else -> this
     }
 
@@ -177,6 +209,13 @@ data class ServerSetupState(
                 localOnnxModels = localOnnxModels.updateCustomModelSelection(
                     id = LocalAiModel.CustomOnnx.id,
                 ),
+            )
+
+            ServerSource.LOCAL_CPP -> this.copy(
+                localCppCustomModel = value,
+                localCppModels = localCppModels.updateCustomModelSelection(
+                    id = LocalAiModel.CustomCpp.id
+                )
             )
 
             ServerSource.LOCAL_GOOGLE_MEDIA_PIPE -> this.copy(

@@ -75,6 +75,7 @@ val viewModelModule = module {
             dispatchersProvider = get(),
             getConfigurationUseCase = get(),
             getLocalOnnxModelsUseCase = get(),
+            getLocalCppModelsUseCase = get(),
             getLocalMediaPipeModelsUseCase = get(),
             fetchAndGetHuggingFaceModelsUseCase = get(),
             urlValidator = get(),

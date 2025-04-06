@@ -24,6 +24,8 @@ internal class GetConfigurationUseCaseImpl(
             stabilityAiApiKey = preferenceManager.stabilityAiApiKey,
             stabilityAiEngineId = preferenceManager.stabilityAiEngineId,
             authCredentials = authorizationStore.getAuthorizationCredentials(),
+            localCppModelId = preferenceManager.localCppModelId,
+            localCppModelPath = preferenceManager.localCppCustomModelPath,
             localOnnxModelId = preferenceManager.localOnnxModelId,
             localOnnxModelPath = preferenceManager.localOnnxCustomModelPath,
             localMediaPipeModelId = preferenceManager.localMediaPipeModelId,

@@ -4,6 +4,7 @@ versionCode = "190"
 targetSdk = "34"
 compileSdk = "35"
 minSdk = "24"
+ndk = "28.0.13004108"
 agp = "8.9.1"
 kotlin = "2.1.20"
 ksp = "2.1.20-1.0.32" # Should match kotlin version
@@ -48,6 +49,8 @@ roboelectric = "4.14.1"
 testCoroutines = "1.10.1"
 mediaPipeGenerator = "0.10.21"
 serialization = "1.8.1"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
 
 [libraries]
 android-tools-build-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "agp" }
@@ -112,6 +115,8 @@ shifthackz-catppuccin-legacy = { group = "com.github.ShiftHackZ.Catppuccin-Andro
 shifthackz-catppuccin-compose = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "compose", version.ref = "catppuccin" }
 shifthackz-catppuccin-splash = { group = "com.github.ShiftHackZ.Catppuccin-Android-Library", name = "splashscreen", version.ref = "catppuccin" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

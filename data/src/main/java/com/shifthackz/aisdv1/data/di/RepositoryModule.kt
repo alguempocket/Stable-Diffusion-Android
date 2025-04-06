@@ -8,7 +8,8 @@ import com.shifthackz.aisdv1.data.repository.GenerationResultRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HordeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.HuggingFaceModelsRepositoryImpl
-import com.shifthackz.aisdv1.data.repository.LocalDiffusionGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.LocalDiffusionCppGenerationRepositoryImpl
+import com.shifthackz.aisdv1.data.repository.LocalDiffusionOnnxGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.LorasRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.MediaPipeGenerationRepositoryImpl
 import com.shifthackz.aisdv1.data.repository.OpenAiGenerationRepositoryImpl
@@ -33,7 +34,8 @@ import com.shifthackz.aisdv1.domain.repository.GenerationResultRepository
 import com.shifthackz.aisdv1.domain.repository.HordeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.HuggingFaceModelsRepository
-import com.shifthackz.aisdv1.domain.repository.LocalDiffusionGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.LocalDiffusionCppGenerationRepository
+import com.shifthackz.aisdv1.domain.repository.LocalDiffusionOnnxGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.LorasRepository
 import com.shifthackz.aisdv1.domain.repository.MediaPipeGenerationRepository
 import com.shifthackz.aisdv1.domain.repository.OpenAiGenerationRepository
@@ -66,7 +68,8 @@ val repositoryModule = module {
     }
 
     singleOf(::TemporaryGenerationResultRepositoryImpl) bind TemporaryGenerationResultRepository::class
-    factoryOf(::LocalDiffusionGenerationRepositoryImpl) bind LocalDiffusionGenerationRepository::class
+    factoryOf(::LocalDiffusionOnnxGenerationRepositoryImpl) bind LocalDiffusionOnnxGenerationRepository::class
+    factoryOf(::LocalDiffusionCppGenerationRepositoryImpl) bind LocalDiffusionCppGenerationRepository::class
     factoryOf(::MediaPipeGenerationRepositoryImpl) bind MediaPipeGenerationRepository::class
     factoryOf(::HordeGenerationRepositoryImpl) bind HordeGenerationRepository::class
     factoryOf(::HuggingFaceGenerationRepositoryImpl) bind HuggingFaceGenerationRepository::class

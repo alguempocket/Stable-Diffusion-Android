@@ -94,6 +94,7 @@ fun LocalDiffusionForm(
                     is DownloadState.Downloading -> Icons.Outlined.FileDownload
                     else -> when {
                         model.id == LocalAiModel.CustomOnnx.id -> Icons.Outlined.Landslide
+                        model.id == LocalAiModel.CustomCpp.id -> Icons.Outlined.Landslide
                         model.id == LocalAiModel.CustomMediaPipe.id -> Icons.Outlined.Landslide
                         model.downloaded -> Icons.Outlined.FileDownloadDone
                         else -> Icons.Outlined.FileDownloadOff
@@ -118,6 +119,7 @@ fun LocalDiffusionForm(
                     )
                     when (model.id) {
                         LocalAiModel.CustomOnnx.id,
+                        LocalAiModel.CustomCpp.id,
                         LocalAiModel.CustomMediaPipe.id -> Unit
 
                         else -> Text(
@@ -272,10 +274,10 @@ fun LocalDiffusionForm(
                 .fillMaxWidth()
                 .padding(top = 32.dp, bottom = 8.dp),
             text = stringResource(
-                id = if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-                    LocalizationR.string.hint_local_diffusion_title
-                } else {
-                    LocalizationR.string.hint_mediapipe_title
+                id = when (state.mode) {
+                    ServerSource.LOCAL_CPP -> LocalizationR.string.hint_local_diffusion_cpp_title
+                    ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.hint_local_diffusion_title
+                    else -> LocalizationR.string.hint_mediapipe_title
                 },
             ),
             style = MaterialTheme.typography.bodyLarge,
@@ -285,10 +287,10 @@ fun LocalDiffusionForm(
         Text(
             modifier = Modifier.padding(top = 16.dp, bottom = 16.dp),
             text = stringResource(
-                id = if (state.mode == ServerSource.LOCAL_MICROSOFT_ONNX) {
-                    LocalizationR.string.hint_local_diffusion_sub_title
-                } else {
-                    LocalizationR.string.hint_mediapipe_sub_title
+                id = when (state.mode) {
+                    ServerSource.LOCAL_CPP -> LocalizationR.string.hint_local_diffusion_cpp_sub_title
+                    ServerSource.LOCAL_MICROSOFT_ONNX -> LocalizationR.string.hint_local_diffusion_sub_title
+                    else -> LocalizationR.string.hint_mediapipe_sub_title
                 },
             ),
             style = MaterialTheme.typography.bodyMedium,
@@ -416,8 +418,10 @@ fun LocalDiffusionForm(
         }
         state.localModels
             .filter {
-                val customPredicate =
-                    it.id == LocalAiModel.CustomOnnx.id || it.id == LocalAiModel.CustomMediaPipe.id
+                val customPredicate = it.id == LocalAiModel.CustomOnnx.id
+                        || it.id == LocalAiModel.CustomMediaPipe.id
+                        || it.id == LocalAiModel.CustomCpp.id
+
                 if (state.localCustomModel) customPredicate else !customPredicate
             }
             .forEach { localModel -> modelItemUi(localModel) }

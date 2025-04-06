@@ -23,6 +23,12 @@ internal class DownloadableModelRepositoryImpl(
         .andThen(localDataSource.getAllOnnx())
         .onErrorResumeNext { localDataSource.getAllOnnx() }
 
+    override fun getAllCpp(): Single<List<LocalAiModel>> = remoteDataSource
+        .fetch()
+        .flatMapCompletable(localDataSource::save)
+        .andThen(localDataSource.getAllCpp())
+        .onErrorResumeNext { localDataSource.getAllCpp() }
+
     override fun getAllMediaPipe(): Single<List<LocalAiModel>> {
         if (buildInfoProvider.type == BuildType.FOSS) {
             return Single.just(emptyList())
