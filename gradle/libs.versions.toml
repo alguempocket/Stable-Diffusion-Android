@@ -45,7 +45,7 @@ dayNightSwitch = "1.0.0"
 catppuccin = "0.1.2"
 turbine = "1.2.0"
 roboelectric = "4.14.1"
-testCoroutines = "1.10.1"
+testCoroutines = "1.10.2"
 mediaPipeGenerator = "0.10.21"
 serialization = "1.8.1"
 
