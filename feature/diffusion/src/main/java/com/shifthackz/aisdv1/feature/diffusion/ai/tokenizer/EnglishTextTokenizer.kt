@@ -85,7 +85,7 @@ internal class EnglishTextTokenizer(
                 TokenizerByteSet.byteDecoder[key]?.let { result.add(it) }
             }
         }
-        val ints = IntArray(result.size)
+        val ints = LongArray(result.size)
         for (i in result.indices) ints[i] = result[i]
         val resultString =  String(ints, 0, ints.size)
         debugLog("{$TAG} {TOKENIZER} {decode} Decode was successful!")
@@ -103,7 +103,7 @@ internal class EnglishTextTokenizer(
             val value = result.group().trim { it <= ' ' }
             val sb = StringBuilder()
             val bytes = value.toByteArray()
-            val array = IntArray(bytes.size)
+            val array = LongArray(bytes.size)
             for (i in array.indices) array[i] = bytes[i].toInt() and 0xff
             for (o in array) {
                 if (TokenizerByteSet.byteEncoder.containsKey(o)) {
@@ -123,9 +123,9 @@ internal class EnglishTextTokenizer(
                 result.add(encoder[word]!!)
             }
         }
-        val ids = IntArray(result.size)
+        val ids = LongArray(result.size)
         for (i in ids.indices) ids[i] = result[i]
-        val copy = IntArray(maxLength)
+        val copy = LongArray(maxLength)
         Arrays.fill(copy, 49407)
         System.arraycopy(ids, 0, copy, 0, if (ids.size < copy.size) ids.size else copy.size)
         copy[copy.size - 1] = 49407
@@ -133,7 +133,7 @@ internal class EnglishTextTokenizer(
         return copy
     }
 
-    override fun tensor(ids: IntArray?): OnnxTensor? {
+    override fun tensor(ids: LongArray?): OnnxTensor? {
         debugLog("{$TAG} {TOKENIZER} {tensor} Trying to tensor ${ids?.size ?: "null"} int array...")
         if (ids == null) {
             debugLog("{$TAG} {TOKENIZER} {tensor} Input ids array is null, skipping.")
@@ -141,7 +141,7 @@ internal class EnglishTextTokenizer(
         }
         val inputIds = OnnxTensor.createTensor(
             ortEnvironmentProvider.get(),
-            IntBuffer.wrap(ids),
+            LongBuffer.wrap(ids),
             longArrayOf(1, ids.size.toLong())
         )
         val input: MutableMap<String, OnnxTensor> = HashMap()
