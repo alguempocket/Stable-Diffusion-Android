@@ -1,8 +1,6 @@
 name: AndroidTest
 
-on:
-  push :
-    branches : [ master ]
+on: [push]
 
 jobs:
   test-feature:
