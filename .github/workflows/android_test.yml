@@ -1,25 +1,29 @@
-name: AndroidTest
+name: Android CI Build
 
-on: [push]
+on: [push] # Trigger build on pushes to the repo
 
 jobs:
-  test-feature:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ubuntu-latest # Use a Linux runner
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.1.0
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3.13.0
-        with:
-          distribution: 'adopt'
-          java-version: '17'
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Grant execute permissions for gradlew
-        run: chmod +x ./gradlew
+    - name: Set up JDK 17 # Or JDK 17 if the project needs it
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'adopt' # Or another distribution
+        java-version: '17' # Match project requirement
 
-      - name: Upload Debug APK
-        uses: actions/upload-artifact@v3
-        with:
-         name: app-debug.apk # Name of the artifact
-         path: app/build/outputs/apk/debug/app-debug.apk # Path to the built APK (might vary slightly!)
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew # gradlew is the gradle wrapper script
+
+    - name: Build with Gradle
+      run: ./gradlew assembleDebug # Build the debug version of the app
+
+    - name: Upload Debug APK
+      uses: actions/upload-artifact@v3
+      with:
+        name: app-debug.apk # Name of the artifact
+        path: app/build/outputs/apk/debug/app-debug.apk # Path to the built APK (might vary slightly!)
