@@ -20,8 +20,8 @@ jobs:
       run: chmod +x gradlew # gradlew is the gradle wrapper script
 
     - name: Build with Gradle
-      run: ./gradlew assembleDebug # Build the debug version of the app
-
+      run: ./gradlew -Porg.gradle.jvmargs="-Xmx4g -XX:+HeapDumpOnOutOfMemoryError" assembleDebug
+    
     - name: Upload Debug APK
       uses: actions/upload-artifact@v4
       with:
